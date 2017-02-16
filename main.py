@@ -36,12 +36,20 @@ def get_catalog(fname):
     f.close()
     return json.dumps(cat)
 
+
 def save_catalog(catalog, fname):
     """Write catalog to json encoded fname file."""
     f = open(fname, "w")
     catalog = [item.__dict__ for item in catalog]
     f.write(json.dumps(catalog))
     f.close()
+
+
+def __eq__(self, other):
+    """for j, k in self, other:"""
+
+    return self.type == other.type and self.style == other.style and self.size == other.size and self.sku == other.sku
+    """ONLY COMPARES FIRST SHOE, NEED A LOOP OR SMTHG TO COMPARE ALL"""
 
 if __name__ == '__main__':
     import doctest
