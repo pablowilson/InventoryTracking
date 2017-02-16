@@ -17,7 +17,7 @@ class Bin:
     def __str__(self):
         s = "Bin {0}:".format(self.name)
         for item in self.contents:
-            s += '\n  ' + item.__str__()
+            s += '\  ' + item.__str__()
         return s
 
     def add(self, item):
