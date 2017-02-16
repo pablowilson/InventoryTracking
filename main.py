@@ -1,4 +1,5 @@
 import random
+import json
 from footwear import Boot, DressShoe, CasualShoe
 
 
@@ -30,11 +31,17 @@ def make_catalog(n):
 
 def get_catalog(fname):
     """Read catalog from json encoded fname file."""
-
+    f = open(fname, "r")
+    cat = json.loads(f.read())
+    f.close()
+    return json.dumps(cat)
 
 def save_catalog(catalog, fname):
     """Write catalog to json encoded fname file."""
-
+    f = open(fname, "w")
+    catalog = [item.__dict__ for item in catalog]
+    f.write(json.dumps(catalog))
+    f.close()
 
 if __name__ == '__main__':
     import doctest
