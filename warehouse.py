@@ -19,29 +19,41 @@ class Bin:
         for item in self.contents:
             s += '\n  ' + item.__str__()
         return s
+class Warehouse:
+    """a location for storing Bins"""
+    def __init__(self, name):
+        self.name = name
+        self.bis = []
+    
+    def addbi(self, bi):
+        self.bis.append(bi)
 
-    def add(self, item):
-        for index, value in enumerate(self.contents):
+    def rmbi(self, bi):
+        self.bis.remove(bi.name)
+        
+    def add(self, bi, item):
+        for index, value in enumerate(bi.contents):
             if value.sku == item.sku:
                 value.quantity += item.quantity
                 break
             if value.sku < item.sku:
                 continue
             else:
-                self.contents.insert(index, item)
+                bi.contents.insert(index, item)
                 break
         else:
-            self.contents.append(item)
+            bi.contents.append(item)
+            a_bin,
 
-    def sell(self, item):
-        for index, amount in enumerate(self.contents):
+    def sell(bi, item):
+        for index, amount in enumerate(bi.contents):
             if amount.sku == item.sku:
                 if amount.quantity - item.quantity == 0:
-                    self.contents.remove(amount)
+                    bi.contents.remove(amount)
                     break
                 else:
-                    self.contents.remove(amount)
-                    self.add(BinItem(item.sku, amount.quantity - item.quantity))
+                    bi.contents.remove(amount)
+                    bi.add(BinItem(item.sku, amount.quantity - item.quantity))
                     break
                 
 if __name__ == '__main__':
