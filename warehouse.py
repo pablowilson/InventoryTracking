@@ -17,7 +17,7 @@ class Bin:
     def __str__(self):
         s = "Bin {0}:".format(self.name)
         for item in self.contents:
-            s += '\  ' + item.__str__()
+            s += '\n  ' + item.__str__()
         return s
 
     def add(self, item):
@@ -33,7 +33,17 @@ class Bin:
         else:
             self.contents.append(item)
 
-
+    def sell(self, item):
+        for index, amount in enumerate(self.contents):
+            if amount.sku == item.sku:
+                if amount.quantity - item.quantity == 0:
+                    self.contents.remove(amount)
+                    break
+                else:
+                    self.contents.remove(amount)
+                    self.add(BinItem(item.sku, amount.quantity - item.quantity))
+                    break
+                
 if __name__ == '__main__':
     import doctest
     doctest.testfile("bin_tests.txt")
