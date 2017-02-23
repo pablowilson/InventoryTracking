@@ -1,6 +1,6 @@
 Tests for BinItems and Bins
 
-  >>> from warehouse import BinItem, Bin
+  >>> from warehouse import BinItem, Bin, Warehouse
 
 
 BinItems
@@ -21,6 +21,15 @@ when a BinItem is printed.
 Bins
 ====
 
+Warehouse
+===
+
+  >>> a_ware = Warehouse('W')
+  >>> a_ware.name
+  'W'
+  >>> a_ware.bis
+  []
+  
 Bin objects are containers that hold BinItems.
 
   >>> a_bin = Bin('A')
@@ -30,32 +39,46 @@ Bin objects are containers that hold BinItems.
   []
   >>> print(a_bin)
   Bin A:
-  >>> a_bin.add(BinItem('12345-45', 500))
+
+  >>> a_ware.addbi(a_bin)
+  >>> b_bin = Bin('B')
+  >>> a_ware.addbi(b_bin)
+  >>> print(a_ware)
+  Warehouse W:
+    Bin A:
+    Bin B:
+  >>> a_ware.rmbi(b_bin)
+  >>> print(a_ware)
+  Warehouse W:
+    Bin A:
+
+
+  >>> a_ware.add(a_bin, BinItem('12345-45', 500))
   >>> print(a_bin)
   Bin A:
     SKU 12345-45: 500
 
 Items should be inserted in order of sku number
 
-  >>> a_bin.add(BinItem('12345-27', 4320))
+  >>> a_ware.add(a_bin, BinItem('12345-27', 4320))
   >>> print(a_bin)
   Bin A:
     SKU 12345-27: 4320
     SKU 12345-45: 500
-  >>> a_bin.add(BinItem('12345-32', 29))
+  >>> a_ware.add(a_bin, BinItem('12345-32', 29))
   >>> print(a_bin)
   Bin A:
     SKU 12345-27: 4320
     SKU 12345-32: 29
     SKU 12345-45: 500
-  >>> a_bin.add(BinItem('12345-15', 333))
+  >>> a_ware.add(a_bin, BinItem('12345-15', 333))
   >>> print(a_bin)
   Bin A:
     SKU 12345-15: 333
     SKU 12345-27: 4320
     SKU 12345-32: 29
     SKU 12345-45: 500
-  >>> a_bin.add(BinItem('12345-97', 2343))
+  >>> a_ware.add(a_bin, BinItem('12345-97', 2343))
   >>> print(a_bin)
   Bin A:
     SKU 12345-15: 333
@@ -67,7 +90,9 @@ Items should be inserted in order of sku number
 If an item which is already in the bin is added, only the quantity should
 change.
 
-  >>> a_bin.add(BinItem('12345-32', 100))
+If an item has 0 quantity, it should be deleted
+
+  >>> a_ware.add(a_bin, BinItem('12345-32', 100))
   >>> print(a_bin)
   Bin A:
     SKU 12345-15: 333
@@ -75,8 +100,11 @@ change.
     SKU 12345-32: 129
     SKU 12345-45: 500
     SKU 12345-97: 2343
-  >>> a_bin.sell(BinItem('12345-32', 9))
-  >>> a_bin.sell(BinItem('12345-97', 2343))
+  >>> a_ware.sell(a_bin, BinItem('12345-32', 9))
+  >>> a_ware.sell(a_bin, BinItem('12345-97', 2343))
+  >>> a_ware.sell(a_bin, BinItem('12345-15', 334))
+  You don't have that much in stock!
+  Transaction Failed.
   >>> print(a_bin)
   Bin A:
     SKU 12345-15: 333
