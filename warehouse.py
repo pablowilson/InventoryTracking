@@ -19,18 +19,23 @@ class Bin:
         for item in self.contents:
             s += '\n  ' + item.__str__()
         return s
+
+
 class Warehouse:
     """a location for storing Bins"""
     def __init__(self, name):
         self.name = name
         self.bis = []
-    
+
     def addbi(self, bi):
         self.bis.append(bi)
+        print("Added Bin {0} to Warehouse {1}".format(bi.name, self.name)
+
 
     def rmbi(self, bi):
         self.bis.remove(bi)
-        
+        print("Removed Bin {0} from Warehouse {1}".format(bi.name, self.name)
+
     def add(self, bi, item):
         for index, value in enumerate(bi.contents):
             if value.sku == item.sku:
@@ -49,14 +54,14 @@ class Warehouse:
             if amount.sku == item.sku:
                 if amount.quantity - item.quantity == 0:
                     bi.contents.remove(amount)
-                    break
+                    return
                 elif amount.quantity - item.quantity < 0:
-                    print("You don't have that much in stock!\nTransaction Failed.")
-                    break
-                else:
-                    bi.contents.remove(amount)
-                    self.add(bi, BinItem(item.sku, amount.quantity - item.quantity))
-                    break
+                    print("Sell quantity exceeds stock\nTransaction Failed")
+                    return
+                elif amount.quantity - item.quantity > 0:
+                    amount.quantity -= item.quantity
+                    return
+        print("Item not found in Bin\nTransaction Failed")
 
     def __str__(self):
         s = "Warehouse {0}:".format(self.name)
