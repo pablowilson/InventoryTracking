@@ -104,7 +104,10 @@ If an item has 0 quantity, it should be deleted
   >>> a_ware.sell(a_bin, BinItem('12345-97', 2343))
   >>> a_ware.sell(a_bin, BinItem('12345-15', 334))
   You don't have that much in stock!
-  Transaction Failed.
+  Transaction Failed
+  >>> a_ware.sell(a_bin, BinItem('12345-42', 100))
+  You don't have that item in this bin!
+  Transaction Failed
   >>> print(a_bin)
   Bin A:
     SKU 12345-15: 333
